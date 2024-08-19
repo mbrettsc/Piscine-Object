@@ -2,10 +2,15 @@
 
 class Account
 {
-public:    Account(const int& id, const int& value);
+public:
+	Account(const int& id, const int& value);
 private:
 	Account();
     int id;
 	int value;
+
+	friend class Bank;
+
+	void deposit(int& amount);
 
 };
