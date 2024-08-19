@@ -1,5 +1,5 @@
 NAME = main
-SRC = Account.cpp Bank.cpp main.cpp
+SRC = Bank.cpp main.cpp
 CFLAGS = -Wall -Wextra -Werror
 CC = c++ -std=c++98
 

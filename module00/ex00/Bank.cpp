@@ -1,51 +1,79 @@
 #include "Bank.hpp"
 #include <exception>
 
-void Bank::createAccount(const int& id, const int& value)
+void Bank::createAccount(const size_t& id, const size_t& value)
 {
-    if (clientAccounts[id])
-        throw std::logic_error("Error: This id has already taken!");
-    Account tmp(id, value);
-    clientAccounts[id] = &tmp;
+    try {
+        Account *ac = (*this)[id];
+    } catch (std::exception & e) {
+        clientAccounts[id] = new Account(id, value);
+        return;
+    }
+    throw std::runtime_error("Account with this id already exist.");
 }
 
-void Bank::deleteAccount(const int& id)
+void Bank::deleteAccount(const size_t& id)
 {
-    if (!clientAccounts[id])
-        throw std::logic_error("Error: id cannot found");
+    Account *ac = (*this)[id];
+    delete ac;
     clientAccounts.erase(id);
 }
 
-void Bank::setAccountAttributes(const int& id,  const int& value)
+void Bank::setAccountAttributes(const size_t& id,  const size_t& value)
 {
-    if (!clientAccounts[id])
-        throw std::logic_error("Error: id cannot found");
-    clientAccounts[id]->value = value;
+    Account *ac = (*this)[id];
+    ac->value = value;
 }
 
-void Bank::deposit(const int& id, int amount)
+void Bank::deposit(const size_t& id, size_t amount)
 {
-    if (!clientAccounts[id])
-        throw std::logic_error("Error: id cannot found");
-    int bankShare = static_cast<int>(0.05 * amount);
+    Account *ac = (*this)[id];
+    size_t bankShare = static_cast<size_t>(0.05 * amount);
     this->liquidity += bankShare;
-    amount -= bankShare;
-    clientAccounts[id]->deposit(amount);
+    ac->value += amount - bankShare;
 }
 
-void Bank::withdrawl(const int& id, const size_t& amount) 
+void Bank::withdraw(const size_t& id, const size_t& amount) 
 {
-
+    Account *ac = (*this)[id]; 
+    if (ac->value > amount)
+    {
+        throw std::runtime_error("You don't have enough money to withdraw that amount.");
+    }
+    ac->value -= amount;
 }
 
-int Bank::getLiquidity() const
+void Bank::giveLoan(const size_t& id, const size_t& amount)
+{
+    Account *ac = (*this)[id];
+    if (amount > liquidity)
+    {
+        throw std::runtime_error("Bank don't have that much money!");
+    }
+    ac->value += amount;
+}
+
+size_t Bank::getClientBalance(const size_t& id) const
+{
+    cBankIt it = clientAccounts.begin();
+    if (it == clientAccounts.end())
+    {
+        throw std::runtime_error("Account with this ID cannot found.");
+    }
+    return it->second->getValue();
+}
+
+Bank::Account* Bank::operator[](const size_t& id)
+{
+    bankIt it = clientAccounts.find(id);
+    if (it == clientAccounts.end())
+    {
+        throw std::runtime_error("Account with this ID cannot found.");
+    }
+    return it->second;
+}
+
+size_t Bank::getLiquidity() const
 {
     return liquidity;
-}
-
-int Bank::getClientBalance(const int& id) const
-{
-    if (clientAccounts.find(id) == clientAccounts.end())
-        throw std::logic_error("Error: id cannot found");
-    return (clientAccounts[id]->value);
 }

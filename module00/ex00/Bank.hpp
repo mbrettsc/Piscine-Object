@@ -2,22 +2,47 @@
 
 #include <map>
 #include <iostream>
-#include "Account.hpp"
+
 
 class Bank
 {
 public:
-	Bank(): liquidity(0) {}
-    void createAccount(const int& id, const int& value);
-    void deleteAccount(const int& id);
-    void setAccountAttributes(const int& id, const int& value);
-    void deposit(const int& id, int amount);
-    void withdrawl(const int& id, const size_t& amount);
+    Bank()
+        : liquidity(0) {}
 
-    int getLiquidity() const;
-    int getClientBalance(const int& id) const;
+    void createAccount(const size_t& id, const size_t& value);
+    void deleteAccount(const size_t& id);
+    void setAccountAttributes(const size_t& id, const size_t& value);
+    void deposit(const size_t& id, size_t amount);
+    void withdraw(const size_t& id, const size_t& amount);
+    void giveLoan(const size_t& id, const size_t& amount);
+
+    size_t getLiquidity() const;
+    size_t getClientBalance(const size_t& id) const;
 
 private:
-    int liquidity;
-	std::map<int, Account *> clientAccounts;
+    class Account
+    {
+    public:
+        Account(const size_t& id, const size_t& value)
+            : id(id), value(value) {}
+
+        size_t getId() const { return id; }
+        size_t getValue() const { return value; }
+
+    private:
+        Account();
+        size_t id;
+        size_t value;
+
+        friend class Bank;
+    };
+
+    typedef std::map<size_t, Account*>::iterator bankIt;
+    typedef std::map<size_t, Account*>::const_iterator cBankIt;
+
+    std::map<size_t, Account *> clientAccounts;
+    size_t liquidity;
+
+    Account* operator[](const size_t& id);
 };
