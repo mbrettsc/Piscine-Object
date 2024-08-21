@@ -9,6 +9,8 @@ class Bank
 public:
     Bank()
         : liquidity(0) {}
+    Bank(size_t l)
+        : liquidity(l) {}
 
     void createAccount(const size_t& id, const size_t& value);
     void deleteAccount(const size_t& id);
@@ -16,6 +18,7 @@ public:
     void deposit(const size_t& id, size_t amount);
     void withdraw(const size_t& id, const size_t& amount);
     void giveLoan(const size_t& id, const size_t& amount);
+    void setLiquidity(size_t liquidity);
 
     size_t getLiquidity() const;
     size_t getClientBalance(const size_t& id) const;
