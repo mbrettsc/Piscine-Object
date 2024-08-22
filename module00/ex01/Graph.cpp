@@ -8,11 +8,6 @@ void Graph::addPoint(const Vector2& point)
      points.push_back(point);
 }
 
-void Graph::setSize(Vector2 size)
-{
-    this->size = size;
-}
-
 void Graph::display() const {
     for (int y = size.getY(); y >= -1; --y) {
         std::cout << "& ";

@@ -14,7 +14,7 @@ public:
 
     void addPoint(const Vector2& point);
 
-    void setSize(Vector2 size);
+    void setSize(Vector2 size) { this->size = size; };
 
     void display() const;
 };
