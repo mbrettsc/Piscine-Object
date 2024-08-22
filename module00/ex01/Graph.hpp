@@ -10,9 +10,11 @@ private:
     std::vector<Vector2> points;
 
 public:
-    Graph(float width, float height) : size(width, height) {}
+    Graph();
 
     void addPoint(const Vector2& point);
+
+    void setSize(Vector2 size);
 
     void display() const;
 };
