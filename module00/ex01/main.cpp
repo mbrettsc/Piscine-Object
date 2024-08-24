@@ -53,5 +53,7 @@ int main(int ac, char **av) {
 
     graph.display();
 
+    graph.saveAsPng("mypng.png");
+
     return 0;
 }

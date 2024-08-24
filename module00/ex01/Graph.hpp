@@ -17,4 +17,6 @@ public:
     void setSize(Vector2 size) { this->size = size; };
 
     void display() const;
+
+    void saveAsPng(std::string filename) const;
 };
